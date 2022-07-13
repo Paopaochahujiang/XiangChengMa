@@ -20,6 +20,7 @@
         android:layout_height="wrap_content"
         android:text="NFC"
         android:layout_marginTop="10dp"
+
         tools:ignore="MissingConstraints" />
 
     <ListView
@@ -28,6 +29,7 @@
         android:layout_height="match_parent"
         android:divider="#e90423"
         android:dividerHeight="1px"
+        android:layout_below="@+id/btn_NFC"
         >
     </ListView>
 
