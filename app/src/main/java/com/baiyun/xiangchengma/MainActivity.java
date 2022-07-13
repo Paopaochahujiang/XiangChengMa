@@ -89,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
             BluetoothDevice device = mDeviceList.get(i);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                device.createBond();
+//                device.createBond();
             }
+            showToast("别搞，没这个功能！");
         }
     };
 
