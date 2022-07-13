@@ -21,6 +21,11 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,11 +43,18 @@ public class MainActivity extends AppCompatActivity {
     private ListView mListView;
     private DeviceAdapter mAdapter;
     private Toast mToast;
+    private Button mBtnNfc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mBtnNfc = findViewById(R.id.btn_NFC);
+        OnClick onClick = new OnClick();
+        mBtnNfc.setOnClickListener(onClick);
+
         initUI();
 
         registerBluetoothReceiver();
@@ -199,5 +211,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiver);
+
     }
+
+    class OnClick implements View.OnClickListener {
+        Intent intent = null;
+
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()) {
+                case R.id.btn_NFC:
+                    intent = new Intent(MainActivity.this, NfcDemoActivity.class);
+                    break;
+            }
+            startActivity(intent);
+        }
+    }
+
 }
