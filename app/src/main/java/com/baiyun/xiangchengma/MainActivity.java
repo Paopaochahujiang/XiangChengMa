@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private DeviceAdapter mAdapter;
     private Toast mToast;
     private Button mBtnNfc;
+    private Button mBtnMap;
 
 
     @Override
@@ -48,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         mBtnNfc = findViewById(R.id.btn_NFC);
+        mBtnMap = findViewById(R.id.btn_Map);
         OnClick onClick = new OnClick();
         mBtnNfc.setOnClickListener(onClick);
+        mBtnMap.setOnClickListener(onClick);
 
         initUI();
 
@@ -219,6 +222,9 @@ public class MainActivity extends AppCompatActivity {
             switch (view.getId()) {
                 case R.id.btn_NFC:
                     intent = new Intent(MainActivity.this, NfcDemoActivity.class);
+                    break;
+                case R.id.btn_Map:
+                    intent = new Intent(MainActivity.this, MapActivity.class);
                     break;
             }
             startActivity(intent);
