@@ -30,12 +30,12 @@ public class NfcDemoActivity extends AppCompatActivity {
         //如果获取不到则不支持NFC
         if (nfcAdapter == null) {
             Toast.makeText(NfcDemoActivity.this,"设备不支持NFC",Toast.LENGTH_LONG).show();
-            return;
+//            return;
         }
         //如果获取到的为不可用状态则未启用NFC
         if (nfcAdapter!=null&&!nfcAdapter.isEnabled()) {
             Toast.makeText(NfcDemoActivity.this,"请在系统设置中先启用NFC功能",Toast.LENGTH_LONG).show();
-            return;
+//            return;
         }
         //因为启动模式是singleTop，于是会调用onNewIntent方法
         onNewIntent(getIntent());
