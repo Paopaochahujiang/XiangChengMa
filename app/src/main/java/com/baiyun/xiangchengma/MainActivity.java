@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.List;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
@@ -79,20 +80,8 @@ public class MainActivity extends AppCompatActivity {
         mListView = findViewById(R.id.device_list);
         mAdapter = new DeviceAdapter(mDeviceList, this);
         mListView.setAdapter(mAdapter);
-        mListView.setOnItemClickListener(bondDeviceClick);
     }
 
-    private AdapterView.OnItemClickListener bondDeviceClick = new AdapterView.OnItemClickListener() {
-        @TargetApi(Build.VERSION_CODES.KITKAT)
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            BluetoothDevice device = mDeviceList.get(i);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//                device.createBond();
-            }
-            showToast("别搞，没这个功能！");
-        }
-    };
 
     private void registerBluetoothReceiver() {
         IntentFilter filter = new IntentFilter();
@@ -118,38 +107,28 @@ public class MainActivity extends AppCompatActivity {
             if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
                 //setProgressBarIndeterminateVisibility(true);
                 //初始化数据列表
-                mDeviceList.clear();
+//                mDeviceList.clear();
                 mAdapter.notifyDataSetChanged();
             } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                //setProgressBarIndeterminateVisibility(false);
-                Log.d("哈嗨", "爷结束了 ");
+                Log.d("蓝牙", "蓝牙搜索已结束");
+                mController.findDevice();
             } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+
                 BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //找到一个添加一个
-                mDeviceList.add(device);
-                mAdapter.notifyDataSetChanged();
-
-            } else if (BluetoothAdapter.ACTION_SCAN_MODE_CHANGED.equals(action)) {  //此处作用待细查
-                int scanMode = intent.getIntExtra(BluetoothAdapter.EXTRA_SCAN_MODE, 0);
-                if (scanMode == BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
-                    setProgressBarIndeterminateVisibility(true);
-                } else {
-                    setProgressBarIndeterminateVisibility(false);
-                }
-
-            } else if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
-                BluetoothDevice remoteDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (remoteDevice == null) {
-                    showToast("无设备");
-                    return;
-                }
-                int status = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, 0);
-                if (status == BluetoothDevice.BOND_BONDED) {
-                    showToast("已绑定" + remoteDevice.getName());
-                } else if (status == BluetoothDevice.BOND_BONDING) {
-                    showToast("正在绑定" + remoteDevice.getName());
-                } else if (status == BluetoothDevice.BOND_NONE) {
-                    showToast("未绑定" + remoteDevice.getName());
+                //利用蓝牙信号计算距离
+                short aShort = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
+                int iRssi = Math.abs(aShort);
+                double power = (iRssi - 59) / 25.0;
+                String mm = new Formatter().format("%.2f",Math.pow(10,power)).toString();
+                if(Double.parseDouble(mm) < 1.0){
+                    //找到一个添加一个
+                    Log.d(device.getName(),mm+"米");
+                    if(!mDeviceList.contains(device)){
+                        mDeviceList.add(device);
+                        mController.stopFindDevice();
+                        mController.findDevice();
+                        mAdapter.notifyDataSetChanged();
+                    }
                 }
             }
         }
@@ -190,9 +169,8 @@ public class MainActivity extends AppCompatActivity {
         //查找设备
         else if (id == R.id.find_device) {
             Log.d("找设备", "开始啦 ");
-            mAdapter.refresh(mDeviceList);
+//            mAdapter.refresh(mDeviceList);
             mController.findDevice();
-            mListView.setOnItemClickListener(bondDeviceClick);
         }
         //查看已绑定设备
         else if (id == R.id.bonded_device) {

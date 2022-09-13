@@ -48,8 +48,18 @@ public class BlueToothController {
     public void findDevice() {
         assert (mAdapter != null);
         mAdapter.startDiscovery();
-        Log.d( "哈嗨","我开始搜拉");
+        Log.d( "蓝牙","蓝牙开始查找设备");
     }
+
+    /**
+     * 关闭查找设备
+     */
+    public void stopFindDevice() {
+        assert (mAdapter != null);
+        mAdapter.cancelDiscovery();
+        Log.d( "蓝牙","蓝牙取消搜索设备");
+    }
+
 
     /**
      * 获取已绑定设备
