@@ -2,6 +2,7 @@
     <string name="app_name">享程码</string>
     <string name="visibility">打开可见</string>
     <string name="find_device">查找设备</string>
+    <string name="stop_find_device">停止查找设备</string>
     <string name="bonded_device">已绑定</string>
 
     <string name="action_settings">设置</string>
@@ -11,4 +12,6 @@
     <string name="disconnect">断开</string>
     <string name="hello">发送Hello</string>
     <string name="hi">发送Hi</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

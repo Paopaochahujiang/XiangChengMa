@@ -16,5 +16,9 @@
         android:id="@+id/bonded_device"
         android:title="@string/bonded_device"
         android:orderInCategory="3" />
+    <item
+        android:id="@+id/stop_find_device"
+        android:title="@string/stop_find_device"
+        android:orderInCategory="3" />
 
 </menu>

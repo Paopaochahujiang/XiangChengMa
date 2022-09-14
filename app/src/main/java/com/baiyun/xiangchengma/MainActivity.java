@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private List<BluetoothDevice> mDeviceList = new ArrayList<>();
     //已绑定设备列表
     private List<BluetoothDevice> mBondedDeviceList = new ArrayList<>();
-
+    //蓝牙控制器
     private BlueToothController mController = new BlueToothController();
 
     private ListView mListView;
@@ -83,6 +83,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * 注册蓝牙接收器
+     */
     private void registerBluetoothReceiver() {
         IntentFilter filter = new IntentFilter();
         //开始查找
@@ -119,14 +122,13 @@ public class MainActivity extends AppCompatActivity {
                 short aShort = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
                 int iRssi = Math.abs(aShort);
                 double power = (iRssi - 59) / 25.0;
-                String mm = new Formatter().format("%.2f",Math.pow(10,power)).toString();
-                if(Double.parseDouble(mm) < 1.0){
+                String mm = new Formatter().format("%.2f", Math.pow(10, power)).toString();
+                if (Double.parseDouble(mm) < 1.0) {
                     //找到一个添加一个
-                    Log.d(device.getName(),mm+"米");
-                    if(!mDeviceList.contains(device)){
+                    Log.d(device.getName(), mm + "米");
+                    if (!mDeviceList.contains(device)) {
                         mDeviceList.add(device);
                         mController.stopFindDevice();
-                        mController.findDevice();
                         mAdapter.notifyDataSetChanged();
                     }
                 }
@@ -168,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
         }
         //查找设备
         else if (id == R.id.find_device) {
-            Log.d("找设备", "开始啦 ");
 //            mAdapter.refresh(mDeviceList);
             mController.findDevice();
         }
@@ -176,7 +177,10 @@ public class MainActivity extends AppCompatActivity {
         else if (id == R.id.bonded_device) {
             mBondedDeviceList = mController.getBondedDeviceList();
             mAdapter.refresh(mBondedDeviceList);
-
+        }
+        //停止查找设备
+        else if (id == R.id.stop_find_device) {
+            mController.stopFindDevice();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -208,5 +212,4 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
     }
-
 }
