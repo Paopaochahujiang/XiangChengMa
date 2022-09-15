@@ -37,6 +37,38 @@ public class MainActivity extends AppCompatActivity {
     //蓝牙控制器
     private BlueToothController mController = new BlueToothController();
 
+    //注册广播监听搜索结果
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
+                //setProgressBarIndeterminateVisibility(true);
+                //初始化数据列表
+//                mDeviceList.clear();
+                mAdapter.notifyDataSetChanged();
+            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
+                Log.d("蓝牙", "蓝牙搜索已结束");
+                mController.findDevice();
+            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
+
+                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                Double dist = BlueToothTools.calculatedDistByRSSI(intent);
+                if (dist < 1.0) {
+                    //找到一个添加一个
+                    Log.d(device.getName(), dist + "米");
+                    if (!mDeviceList.contains(device)) {
+                        mDeviceList.add(device);
+                        mController.stopFindDevice();
+                        mAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+        }
+    };
+
+    private BlueToothTools mBTTools = new BlueToothTools(this, mController, receiver);
+
     private ListView mListView;
     private DeviceAdapter mAdapter;
     private Toast mToast;
@@ -57,22 +89,23 @@ public class MainActivity extends AppCompatActivity {
 
         initUI();
 
-        registerBluetoothReceiver();
-
-        /**
-         * 用户权限安卓10以上需要,获取定位权限
-         **/
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
-                    || ActivityCompat.checkSelfPermission(this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
-                String[] strings = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
-                ActivityCompat.requestPermissions(this, strings, 1);
-            }
-        }
-        //软件运行时直接申请打开蓝牙
-        mController.turnOnBlueTooth(this, REQUEST_CODE);
+//        registerBluetoothReceiver();
+//
+//        /**
+//         * 用户权限安卓10以上需要,获取定位权限
+//         **/
+//        if (Build.VERSION.SDK_INT >= 23) {
+//            if (ActivityCompat.checkSelfPermission(this,
+//                    Manifest.permission.ACCESS_FINE_LOCATION) != PERMISSION_GRANTED
+//                    || ActivityCompat.checkSelfPermission(this,
+//                    Manifest.permission.ACCESS_COARSE_LOCATION) != PERMISSION_GRANTED) {
+//                String[] strings = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION};
+//                ActivityCompat.requestPermissions(this, strings, 1);
+//            }
+//        }
+//        //软件运行时直接申请打开蓝牙
+//        mController.turnOnBlueTooth(this, REQUEST_CODE);
+        mBTTools.Init();
     }
 
     //初始化用户界面
@@ -82,59 +115,26 @@ public class MainActivity extends AppCompatActivity {
         mListView.setAdapter(mAdapter);
     }
 
+//
+//    /**
+//     * 注册蓝牙接收器
+//     */
+//    private void registerBluetoothReceiver() {
+//        IntentFilter filter = new IntentFilter();
+//        //开始查找
+//        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
+//        //结束查找
+//        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+//        //查找设备
+//        filter.addAction(BluetoothDevice.ACTION_FOUND);
+//        //设备扫描模式改变
+//        filter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
+//        //绑定状态
+//        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+//        //注册接收器
+//        registerReceiver(receiver, filter);
+//    }
 
-    /**
-     * 注册蓝牙接收器
-     */
-    private void registerBluetoothReceiver() {
-        IntentFilter filter = new IntentFilter();
-        //开始查找
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_STARTED);
-        //结束查找
-        filter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        //查找设备
-        filter.addAction(BluetoothDevice.ACTION_FOUND);
-        //设备扫描模式改变
-        filter.addAction(BluetoothAdapter.ACTION_SCAN_MODE_CHANGED);
-        //绑定状态
-        filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
-        //注册接收器
-        registerReceiver(receiver, filter);
-    }
-
-    //注册广播监听搜索结果
-    private BroadcastReceiver receiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if (BluetoothAdapter.ACTION_DISCOVERY_STARTED.equals(action)) {
-                //setProgressBarIndeterminateVisibility(true);
-                //初始化数据列表
-//                mDeviceList.clear();
-                mAdapter.notifyDataSetChanged();
-            } else if (BluetoothAdapter.ACTION_DISCOVERY_FINISHED.equals(action)) {
-                Log.d("蓝牙", "蓝牙搜索已结束");
-                mController.findDevice();
-            } else if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                //利用蓝牙信号计算距离
-                short aShort = intent.getExtras().getShort(BluetoothDevice.EXTRA_RSSI);
-                int iRssi = Math.abs(aShort);
-                double power = (iRssi - 59) / 25.0;
-                String mm = new Formatter().format("%.2f", Math.pow(10, power)).toString();
-                if (Double.parseDouble(mm) < 1.0) {
-                    //找到一个添加一个
-                    Log.d(device.getName(), mm + "米");
-                    if (!mDeviceList.contains(device)) {
-                        mDeviceList.add(device);
-                        mController.stopFindDevice();
-                        mAdapter.notifyDataSetChanged();
-                    }
-                }
-            }
-        }
-    };
 
     //设置toast的标准格式
     private void showToast(String text) {
@@ -192,8 +192,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(receiver);
-
+//        unregisterReceiver(receiver);
+        mBTTools.unregisterReceiver();
     }
 
     class OnClick implements View.OnClickListener {

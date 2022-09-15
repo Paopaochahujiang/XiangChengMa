@@ -61,7 +61,7 @@ public class DeviceAdapter extends BaseAdapter{
         String name = device.getName();
 
         if( name == null || name.length() <=0 || !name.toLowerCase(Locale.ROOT).matches("^[0-1][y,r,g]$")){
-            line1.setText("该用户命名不规范，请主动出示健康码");
+            line1.setText(name+"该用户命名不规范，请主动出示健康码");
         }else {
             StringBuilder text = new StringBuilder();
             text.append("性别：");
