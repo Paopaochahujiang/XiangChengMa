@@ -1,4 +1,4 @@
-package com.baiyun.xiangchengma;
+package com.baiyun.xiangchengma.adapter;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;

@@ -1,25 +1,65 @@
-package com.baiyun.xiangchengma;
+package com.baiyun.xiangchengma.activity.LocationPage;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.RadioGroup;
+
 
 import com.amap.api.maps2d.AMap;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.UiSettings;
+import com.amap.api.maps2d.model.LatLng;
+import com.amap.api.maps2d.model.MyLocationStyle;
+import com.amap.api.maps2d.model.Polyline;
+import com.amap.api.maps2d.model.PolylineOptions;
+import com.baiyun.xiangchengma.R;
+import com.baiyun.xiangchengma.bean.User;
+import com.baiyun.xiangchengma.bean.UserLocationInfo;
+import com.baiyun.xiangchengma.server.impl.UserLocationInfoDAOImpl;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class MapActivity extends AppCompatActivity {
-    private MapView mapView;
+
+public class MapActivity extends AppCompatActivity  {
+
+
+
+
+
+    private  Map<String, User> user;
+
+
+
+    private double latitude =0.0;
+    private double longitude =0.0;
+
+    private  MapView mapView;
     private AMap aMap;
+    private Polyline polyline;
+    private UiSettings mUiSettings;//定义一个UiSettings对象
+
+    /**
+     * 是否打开地形图, 默认为关闭
+     * 打开地形图之后，底图会变成3D模式，添加的点线面等覆盖物也会自动带有高程
+     * <p>
+     * 注意：需要在MapView创建之前调用
+     *
+     * @param isTerrainEnable true为打开，默认false
+     * @since 8.0.0
+     */
+    public static void setTerrainEnable(boolean isTerrainEnable) {
+
+    }
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +69,75 @@ public class MapActivity extends AppCompatActivity {
         mapView.onCreate(savedInstanceState);// 此方法必须重写
 
         init();
+
+        MyLocationStyle myLocationStyle;
+        myLocationStyle = new MyLocationStyle();//初始化定位蓝点样式类myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_LOCATION_ROTATE);//连续定位、且将视角移动到地图中心点，定位点依照设备方向旋转，并且会跟随设备移动。（1秒1次定位）如果不设置myLocationType，默认也会执行此种模式。
+        myLocationStyle.interval(2000); //设置连续定位模式下的定位间隔，只在连续定位模式下生效，单次定位模式下不会生效。单位为毫秒。
+        aMap.setMyLocationStyle(myLocationStyle);//设置定位蓝点的Style
+
+
+
+         aMap.getUiSettings().setMyLocationButtonEnabled(true);//设置默认定位按钮是否显示，非必需设置。
+
+        myLocationStyle.myLocationType(MyLocationStyle.LOCATION_TYPE_FOLLOW_NO_CENTER);
+
+        aMap.setMyLocationEnabled(true);// 设置为true表示启动显示定位蓝点，false表示隐藏定位蓝点并不进行定位，默认是false。
+
+        mUiSettings.setCompassEnabled(true);
+
+        aMap.setTrafficEnabled(true);//显示实时路况图层，aMap是地图控制器对象。
+
+        mUiSettings.setAllGesturesEnabled (true);
+
+        //实例化线条数组
+        List<LatLng> latLngs = new ArrayList<LatLng>();
+
+
+//        UserDAOImpl userDAO=new UserDAOImpl(MapActivity.this);
+//
+//        user = userDAO.getUser();
+       // 实例化接口
+        UserLocationInfoDAOImpl userLocationInfoDAO = new UserLocationInfoDAOImpl(MapActivity.this);
+        // 获取当前最近一次定位
+//        Map<String, UserLocationInfo> userLocationInfo = userLocationInfoDAO.getUserLocationInfo(1);
+//        //获取map集合里得user数组
+//        UserLocationInfo user =userLocationInfo.get("user");
+//
+//        latitude = user.getLatitude();
+//        longitude = user.getLongitude();
+
+        //获得所有点集合
+        List<UserLocationInfo> allUserLocationInfo = userLocationInfoDAO.getAllUserLocationInfo(1);
+
+        //遍历点集合,并画出线条
+        for(UserLocationInfo userLocationInfo : allUserLocationInfo){
+
+            latLngs.add(new LatLng(userLocationInfo.getLatitude(), userLocationInfo.getLongitude()));
+
+        }
+
+
+        latLngs.add(new LatLng(25.900430,113.265061));
+        latLngs.add(new LatLng(24.955192,116.140092));
+        latLngs.add(new LatLng(24.898323,114.057694));
+        latLngs.add(new LatLng(26.898323,112.057694));
+        latLngs.add(new LatLng(27.898323,112.057694));
+
+
+
+        polyline = aMap.addPolyline(new PolylineOptions().
+
+                addAll(latLngs).width(10).color(Color.argb(255, 1, 1, 1)));
+
+
+
     }
+
+
+
+
+
+
 
     /**
      * 初始化AMap对象
@@ -38,6 +146,10 @@ public class MapActivity extends AppCompatActivity {
         if (aMap == null) {
             aMap = mapView.getMap();
 
+        }
+        if(mUiSettings == null){
+
+            mUiSettings=aMap.getUiSettings();
         }
 
     }
@@ -199,4 +311,6 @@ public class MapActivity extends AppCompatActivity {
         }
         return true;
     }
+
+
 }

@@ -8,4 +8,52 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+        <!--   浮动菜单的文本标签的样式   -->
+        <style name="menu_labels_style">
+            <item name="android:background">@drawable/fab_label_background</item>
+            <item name="android:textColor">@color/colorPrimaryDark</item>
+            <item name="android:textSize">16dp</item>
+        </style>
+
+
+
+        <!--在Android 4.4之前的版本上运行，直接跟随系统主题-->
+        <style name="TranslucentTheme" parent="AppTheme">
+
+        </style>
+
+        <!--   去掉Activity的ActionBar的样式   -->
+        <style name="AppTheme.NoActionBar">
+            <item name="windowActionBar">false</item>
+            <item name="windowNoTitle">true</item>
+            <item name="android:windowFullscreen">true</item>
+        </style>
+
+        <!--    登录页EditText样式   -->
+        <style name="MyEditText" parent="Theme.AppCompat.Light">
+            <item name="colorControlNormal">@color/dianzilan</item>
+            <item name="colorControlActivated">@color/dianzilan</item>
+        </style>
+
+
+
+
+        <style name="MyBtnStyle">
+            <item name="android:textColor">@color/dianzilan</item>
+            <item name="android:textSize">25sp</item>
+            <item name="android:background">@drawable/btn_bg_selector</item>
+            <item name="android:layout_marginTop">20dp</item>
+            <item name="android:layout_marginRight">20dp</item>
+            <item name="android:layout_marginLeft">20dp</item>
+        </style>
+
+        <style name="MyEditStyle">
+            <item name="android:textSize">18sp</item>
+            <item name="android:background">@drawable/edit_text_bg</item>
+            <item name="android:paddingLeft">10dp</item>
+            <item name="android:layout_height">50dp</item>
+        </style>
+
+
+
 </resources>

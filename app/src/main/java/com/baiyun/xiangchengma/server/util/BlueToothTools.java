@@ -1,4 +1,4 @@
-package com.baiyun.xiangchengma;
+package com.baiyun.xiangchengma.server.util;
 
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
@@ -7,13 +7,13 @@ import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
+
+import com.baiyun.xiangchengma.controller.BlueToothController;
 
 import java.util.Formatter;
 
