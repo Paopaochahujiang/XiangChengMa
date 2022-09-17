@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -50,10 +51,15 @@ public class BlueToothController {
     public void findDevice() {
         assert (mAdapter != null);
 //        mAdapter.startDiscovery();
-        scann(mAdapter,3);
+        scann(mAdapter,2);
         Log.d( "蓝牙","蓝牙开始查找设备");
     }
 
+    /**
+     * 蓝牙扫描定时器
+     * @param mBluetoothAdapter
+     * @param seconds
+     */
     void scann(final BluetoothAdapter mBluetoothAdapter, int seconds)
     {
         final long desired_miliseconds=seconds*1000;
@@ -64,16 +70,18 @@ public class BlueToothController {
             public void run() {
                 if((System.currentTimeMillis()-start_mils)>=desired_miliseconds&& mBluetoothAdapter.isDiscovering())
                 {
-                    Log.d("蓝牙", "蓝牙搜索已结束");
+                    Log.d("蓝牙", "蓝牙定时搜索已结束");
                     mBluetoothAdapter.cancelDiscovery();
                     tm.cancel();
                 }else if((System.currentTimeMillis()-start_mils)<desired_miliseconds&&!mBluetoothAdapter.isDiscovering())
                 {
-                    Log.d( "蓝牙","蓝牙开始查找设备");
+                    Date time = new Date(System.currentTimeMillis());
+                    Log.d( "蓝牙","蓝牙开始定时搜索设备");
+                    Log.d("当前时间",time.toString());
                     mBluetoothAdapter.startDiscovery();
                 }
             }
-        },2000,1000);
+        },1000,1000);
 
     }
 
