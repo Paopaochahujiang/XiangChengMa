@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.loginPage.LoginActivity"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorBackGroundWhite">
+
+
+    <ImageView
+        android:id="@+id/iv_iffinished"
+        android:layout_width="212dp"
+        android:layout_height="98dp"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="end"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="85dp"
+        android:background="@mipmap/logo" />
+
+
+    <EditText
+        android:id="@+id/et_loginactivity_username"
+        android:layout_width="320dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="40dp"
+        android:drawableLeft="@drawable/user"
+        android:hint="社区账号"
+        android:singleLine="true"
+        android:textSize="22dp"
+        android:theme="@style/MyEditText" />
+
+    <EditText
+        android:id="@+id/et_loginactivity_password"
+        android:layout_width="320dp"
+        android:layout_height="75dp"
+        android:hint="社区密码"
+        android:singleLine="true"
+        android:inputType="textPassword"
+        android:textSize="22dp"
+        android:drawableLeft="@drawable/password"
+        android:theme="@style/MyEditText"/>
+    <Button
+        android:id="@+id/bt_loginactivity_login"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="登录"
+        android:background="@drawable/bt_login_shape"
+        android:textColor="#ffffff"
+        android:textSize="25dp"
+        android:onClick="onClick"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        >
+        <CheckBox
+            android:id="@+id/cb_remember"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登录用户代表你已阅读并同意《用户服务协议》、《隐私协议》和《运营商协议》"></CheckBox>
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimary"
+        android:text="还没有账号？"
+        android:layout_gravity="right"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        android:onClick="toRegister"
+        ></TextView>
+
+
+
+</LinearLayout>

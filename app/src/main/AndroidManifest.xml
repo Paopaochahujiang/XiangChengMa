@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.baiyun.xiangchengma">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.baiyun.xiangchengma"
+    android:versionCode="1"
+    android:versionName="1.0.0">
+
+    <uses-sdk
+        android:minSdkVersion="15"
+        android:targetSdkVersion="17" />
+    <!-- NFC权限声明 -->
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_CONFIGURATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- 声明后台定位权限 -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!-- 要求当前设备必须要有NFC芯片 -->
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
 
     <application
@@ -17,14 +46,100 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        android:theme="@style/AppTheme.NoActionBar">
+        <activity
+            android:name=".activity.loginPage.registerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.loginPage.LoginActivity"
+             />
+        <activity
+            android:name=".activity.loginPage.WelcomeActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- TECH_DISCOVERED类型的nfc -->
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+            <!-- 后设资源  调用自己建立的文件夹xml中的文件 -->
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
         </activity>
+        <activity
+            android:name=".activity.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ViewData.NewLocationData"
+            android:exported="false" />
+        <activity
+            android:name=".ViewData.AllLocationData"
+            android:exported="false" />
+        <activity
+            android:name=".activity.LocationPage.UseLocationInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.UsePage.SqlActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.LocationPage.LocationActivity"
+            android:exported="false" />
+        <activity android:name=".activity.LocationPage.MapActivity" />
+        <activity
+            android:name=".activity.NFCPage.NfcDemoActivity"
+            android:exported="false" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="bb17228b9fc773098d99d62f95c61fd6" />
+
+        <activity
+            android:name=".activity.TaskDetailActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".nfc.activity.RunAppActivity"
+            android:label="@string/str_run_app"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.RunUrlActivity"
+            android:label="@string/str_run_url"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.ReadTextActivity"
+            android:label="@string/str_read_text"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.WriteTextActivity"
+            android:label="@string/str_write_text"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.ReadUriActivity"
+            android:label="@string/str_read_uri"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.WriteUriActivity"
+            android:label="@string/str_write_uri"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.ReadMUActivity"
+            android:label="@string/str_read_mu"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.activity.WriteMUActivity"
+            android:label="@string/str_write_mu"
+            android:launchMode="singleTop" />
+        <activity
+            android:name=".nfc.NfcActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" />
     </application>
+
 
 </manifest>
