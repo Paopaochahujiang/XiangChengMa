@@ -1,4 +1,4 @@
-package com.baiyun.xiangchengma;
+package com.baiyun.xiangchengma.activity.NFCPage;
 
 import android.app.PendingIntent;
 import android.content.Intent;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.baiyun.xiangchengma.R;
 
 public class NfcDemoActivity extends AppCompatActivity {
     private NfcAdapter nfcAdapter;

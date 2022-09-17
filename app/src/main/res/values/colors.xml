@@ -1,6 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorWhiteBlue">#F0FFFF</color>
+    <color name="colorBackGroundWhite">#FFFFFF</color>
+
+    <color name="colorWhiteSmoke">#F5F5F5</color>
+
+    <color name="wuhuaguohong">#efafad</color>
+    <color name="hedinghong">#d42517</color>
+    <color name="colorPrimaryDark">#696969</color>
+    <color name="black">#000000</color>
+    <color name="colorBright">#C3A6</color>
+    <color name="colorAccent">#10aec2</color>
+    <color name="youyu">#008B8B</color>
+    <color name="colorBlueDark">#57c3c2</color>
+    <color name="colorPrimary">#5CACEE</color>
+    <color name="colorBrightBlue">#2196f2</color>
+
+
+    <color name="zhulv">#1ba784</color>
+    <color name="shilv">#57c3c2</color>
+    <color name="dianzilan">#10aec2</color>
+    <color name="hui">#ffeffa</color>
+
+
+
+
+
+    <color name="green_200">#A5D6A7</color>
+    <color name="green_500">#4CAF50</color>
+    <color name="green_700">#4CAF50</color>
+
+
+
+
+
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="purple_200">#C0A1FA</color>
+    <color name="purple_500">#66508E</color>
+    <color name="purple_700">#240A53</color>
+    <color name="white">#FFFFFF</color>
+    <color name="teal_200">#1E9823</color>
+    <color name="teal_700">#0A570D</color>
+
+
 </resources>
